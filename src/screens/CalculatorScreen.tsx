@@ -75,7 +75,30 @@ export const CalculatorScreen = () => {
     //selama tombol ini di press ingt substr itu ambil sesudah angka 
     //contoh substr(1) utk tulisan "hello" maka hasil yg dimabil adalah ello 
 
-      
+  const btnDelete =()=> {
+     let Negative =""
+     let tempNumb = numb  //kita set tempoerary number = current number(numb)
+      //check jka current number negatig
+     if(numb.includes("-")) {
+        Negative ="-"
+        //tempNumb berisi angka positg dimabil daru -cureent 
+        //tanda "-" tidak diu=ikutsetakan 
+        tempNumb = numb.substring(0,1)
+     }
+
+     // dibawah 
+     //tanda - dari tempNumb sudah tak ada tempbNUb yg dicek > 1 berisi angka saja 
+     //maka :
+     if( tempNumb.length > 1 ){
+      //tanda negativ disertakan dan curent number adalah 
+      //- currentnumber yg diambil 1 digit angka sebelah paling-kanan
+        setNumb(Negative + tempNumb.slice(0,-1))
+     } else {
+       //jika hanya 1 digit angka langsung kasih 0 saja 
+       setNumb('0')
+     }
+
+  }    
 
 
 
@@ -95,7 +118,7 @@ export const CalculatorScreen = () => {
         <View style={styles.row} >
            <BotonCalc mytext='C' color='#9B9B9B' myaction={Clean}/>
            <BotonCalc mytext='+/-' color='#9B9B9B' myaction={PositivNegativ} />
-           <BotonCalc mytext='del' color='#9B9B9B' myaction={Clean} />
+           <BotonCalc mytext='del' color='#9B9B9B' myaction={btnDelete} />
            <BotonCalc mytext='/' color='#FF9427' myaction={Clean}/>
            
           </View>
