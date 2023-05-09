@@ -10,14 +10,74 @@ export const CalculatorScreen = () => {
 
    //func Clean 
    const Clean =()=> {
+    //numb adalah current angka atau angka saat ini 
     setNumb('0')
+    
+    setPrevNumb('0')
    }
 
    //func assembleNumb ini olah angka2 yg masuk pure angka 
+   //ada banyak kriteria smua di check disini yg terpenting adalah 
+   //masalah "dot" atau point 
    const assembleNumb =(numtext:string)=> {
-     setNumb(numb+numtext) //num yg sekarang ditambah prevNumb
-     //atau ditambah num yg diinput sblumnya 
+
+     //1.check tidak terima dbouble dot '.'/ double point 
+     if(numb.includes(".") && numtext === '.') return
+
+     //1.jika start awal 0 dan -0 check angka berikutnya numtext( yg masuk) maka:
+     if (numb.startsWith("0") || numb.startsWith('-0')) {
+      
+           //2.angka berikutnya adalah dot '.'  maka :
+          if(numtext === '.') {
+               //angka sekarang/curent(numb) + angkayg mngikuti(numtext)
+                 setNumb(numb + numtext)
+       
+          //2.jika berikutnya nol setelah angka numb state ".'":ie  0.0 maka
+             } else if(numtext === '0' && numb.includes(".")) {
+                    setNumb(numb + numtext)
+       
+                //2.jika angka berikutnya tidak zero dan tidak ada sblumnya dot '.'
+             }  else if (numtext !== '0' && !numb.includes('.') ){
+
+                   //2.maka isi dgn numtext saja(angka arg slanjutnya)
+                   setNumb(numtext)
+
+                //2.jika penulisan selanjutnya  00000.0 /smacamnya 
+             } else if (numtext === '0' && !numb.includes(".") ) {
+                  //maka hindari dgn setNUmb(numb) angka yg sblunnya di setsaja yg uncul gak nambah2 
+                 setNumb(numb)
+
+               //2.jika normal tambahkan slalu state numb dgn angka berikutya (args) numtext
+             } else {
+                 setNumb(numb + numtext)
+             }
+     } else {
+      //jika angka yg masuk bukan 0 dan -0 maka 
+      ////angka sekarang/curent(numb) + angkayg mngikuti(numtext)
+      setNumb(numb+numtext)
+     }
+
+     
    }
+
+    //ini function +/- kasih label psotif /negatif pada angka 
+   const PositivNegativ=()=> {
+    //mngubah  negativ jadi postiv(ilagnin minya)
+    if(numb.includes('-')){
+      setNumb(numb.replace('-',''))
+    } else {
+      //ngubah angka postif jadi negatif
+      setNumb('-' + numb)
+    }
+   }
+
+    //delete angka2 palingkanaynya atau angka2 palingkanan trus kekiri 
+    //selama tombol ini di press ingt substr itu ambil sesudah angka 
+    //contoh substr(1) utk tulisan "hello" maka hasil yg dimabil adalah ello 
+
+      
+
+
 
 
   return (
@@ -34,7 +94,7 @@ export const CalculatorScreen = () => {
          {/* row 1 button */}
         <View style={styles.row} >
            <BotonCalc mytext='C' color='#9B9B9B' myaction={Clean}/>
-           <BotonCalc mytext='+/-' color='#9B9B9B' myaction={Clean} />
+           <BotonCalc mytext='+/-' color='#9B9B9B' myaction={PositivNegativ} />
            <BotonCalc mytext='del' color='#9B9B9B' myaction={Clean} />
            <BotonCalc mytext='/' color='#FF9427' myaction={Clean}/>
            
@@ -97,6 +157,16 @@ lingkar biasa
 TAHAP 2 stelah diatas selsasai kita buat hook Calculator 
 utk proses function2 dari tombol2 tsb diatas ktika touchable nya di press atau ditaekan 
 nah statenya di pasang di CalculatorScreen myNumber,setMyNumber
+
+*/
+
+/*TAHAP 3:ASEMBELE NUMBER:
+disini kita deteksi "." dot atau point yg dimasukan user 
+antara lain :
+  
+//check jika negatif kita ganti dgn '' 
+
+
 
 
 
