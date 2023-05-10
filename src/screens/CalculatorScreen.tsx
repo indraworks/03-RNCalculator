@@ -10,7 +10,9 @@ enum Operators {
 
 
 export const CalculatorScreen = () => {
-  const ref = useRef<Operators>()
+
+  const ultima_ref = useRef<Operators>()
+
   const [prevNumb,setPrevNumb] = useState('0')
   const [numb,setNumb] = useState('0')
 
@@ -124,35 +126,68 @@ export const CalculatorScreen = () => {
     //operasi tambah 
     const btnAdd =()=> {
       changePrevNumber()
-      ref.current = Operators.summ
+      ultima_ref.current = Operators.summ
     }
 
     //operasi kurang 
     const btnSub =()=> {
       changePrevNumber()
-      ref.current = Operators.summ
+      ultima_ref.current = Operators.subb
     }
 
     //operasi bagi 
     const btnDivide =()=> {
       changePrevNumber()
-      ref.current = Operators.divider
+      ultima_ref.current = Operators.divider
     }
 
     //operaasi kali 
     const btnMultiplier = ()=> {
       changePrevNumber()
-      ref.current = Operators.multiplier
+      ultima_ref.current = Operators.multiplier
     }
 
     
+    const Calculate =()=> {
+      const num1 = Number(numb)
+      const num2 = Number(prevNumb)
+      
+      //pilihan dengan switch 
+      switch (ultima_ref.current) {
+            case Operators.summ:
+              setNumb(`${num1 + num2}`)
+              break;
+            case Operators.subb:
+              setNumb(`${num2 - num1}`)
+              break;
+            case Operators.divider:
+              setNumb(`${num2 / num1}`)
+              break;
+            case Operators.multiplier:
+              setNumb(`${num1 * num2}`)
+              break;
 
+
+             default: 
+               break; 
+
+      }
+      
+         setPrevNumb('0')
+
+    }
 
 
 
   return (
     <View style={styles.calcContainer}>
-          <Text style={styles.txtResultSmall}>{prevNumb}</Text>
+         {
+           (prevNumb !== '0' &&  <Text style={styles.txtResultSmall}>{prevNumb}</Text>)
+          
+         }
+         
+          
+          
           <Text 
           style={styles.txtResult}
           //dibatasi 1 line saja dan besar font fit utk satu halaman
@@ -197,7 +232,7 @@ export const CalculatorScreen = () => {
          <View style={styles.row} >
            <BotonCalc mytext='0'  wide myaction={assembleNumb} />
            <BotonCalc mytext='.'  myaction={assembleNumb}/>
-           <BotonCalc mytext='=' color='#FF9427' myaction={Clean}/>
+           <BotonCalc mytext='=' color='#FF9427' myaction={Calculate}/>
            
           </View>
         
