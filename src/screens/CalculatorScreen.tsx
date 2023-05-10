@@ -1,9 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState,useRef } from 'react'
 import { View, Text, SafeAreaView } from 'react-native';
 import { styles } from '../theme/AppTheme'
 import { BotonCalc } from '../components/BotonCalc';
 
+//declare enum operators 
+enum Operators {
+  multiplier,divider,summ,subb
+}
+
+
 export const CalculatorScreen = () => {
+  const ref = useRef<Operators>()
   const [prevNumb,setPrevNumb] = useState('0')
   const [numb,setNumb] = useState('0')
 
@@ -83,7 +90,7 @@ export const CalculatorScreen = () => {
         Negative ="-"
         //tempNumb berisi angka positg dimabil daru -cureent 
         //tanda "-" tidak diu=ikutsetakan 
-        tempNumb = numb.substring(0,1)
+        tempNumb = numb.substring(1)
      }
 
      // dibawah 
@@ -99,6 +106,46 @@ export const CalculatorScreen = () => {
      }
 
   }    
+   
+    //dibagian ini kita akan taruh angka yhg kita tulis pada bagian numb (angka besat)
+    //jika angka besar dihaups ,angka kecil(state prevNumb)  tetap simpan diatas nya (tetap kedisplay)
+   //ini dipaakai setelah button calculation di pencet (+ ,/,-,*) 
+   //masuk ke bagian num dipslay yg kecil dari command setPrevNumb(numb)
+   //atay command setPrevNumb(numb.slice(0,-1)) kalau - (minus)
+    const changePrevNumber =()=> {
+        if(numb.endsWith('.')) {
+          setPrevNumb(numb.slice(0,-1)) //ilangkin tanda titk paling kanan 
+        } else {
+          setPrevNumb(numb)
+        }
+        setNumb('0') //kita memang bermaksud nolkan curremt number ( angka besar pada display)
+   }
+
+    //operasi tambah 
+    const btnAdd =()=> {
+      changePrevNumber()
+      ref.current = Operators.summ
+    }
+
+    //operasi kurang 
+    const btnSub =()=> {
+      changePrevNumber()
+      ref.current = Operators.summ
+    }
+
+    //operasi bagi 
+    const btnDivide =()=> {
+      changePrevNumber()
+      ref.current = Operators.divider
+    }
+
+    //operaasi kali 
+    const btnMultiplier = ()=> {
+      changePrevNumber()
+      ref.current = Operators.multiplier
+    }
+
+    
 
 
 
@@ -119,7 +166,7 @@ export const CalculatorScreen = () => {
            <BotonCalc mytext='C' color='#9B9B9B' myaction={Clean}/>
            <BotonCalc mytext='+/-' color='#9B9B9B' myaction={PositivNegativ} />
            <BotonCalc mytext='del' color='#9B9B9B' myaction={btnDelete} />
-           <BotonCalc mytext='/' color='#FF9427' myaction={Clean}/>
+           <BotonCalc mytext='/' color='#FF9427' myaction={btnDivide}/>
            
           </View>
          {/* row 2 button */}
@@ -127,7 +174,7 @@ export const CalculatorScreen = () => {
            <BotonCalc mytext='7'  myaction={assembleNumb}/>
            <BotonCalc mytext='8'  myaction={assembleNumb}/>
            <BotonCalc mytext='9' myaction={assembleNumb} />
-           <BotonCalc mytext='X'  color='#FF9427' myaction={Clean}/>
+           <BotonCalc mytext='X'  color='#FF9427' myaction={btnMultiplier}/>
            
           </View>
          {/* row 3 button */}
@@ -135,7 +182,7 @@ export const CalculatorScreen = () => {
            <BotonCalc mytext='4'  myaction={assembleNumb}/>
            <BotonCalc mytext='5'  myaction={assembleNumb}/>
            <BotonCalc mytext='6'  myaction={assembleNumb}/>
-           <BotonCalc mytext='-' color='#FF9427' myaction={Clean}/>
+           <BotonCalc mytext='-' color='#FF9427' myaction={btnSub}/>
            
           </View>
          {/* row 4 button */}
@@ -143,7 +190,7 @@ export const CalculatorScreen = () => {
            <BotonCalc mytext='1'  myaction={assembleNumb}/>
            <BotonCalc mytext='2'  myaction={assembleNumb}/>
            <BotonCalc mytext='3'  myaction={assembleNumb}/>
-           <BotonCalc mytext='+' color='#FF9427' myaction={Clean} />
+           <BotonCalc mytext='+' color='#FF9427' myaction={btnAdd} />
            
           </View>
          {/* row 5 button */}
@@ -190,7 +237,21 @@ antara lain :
 //check jika negatif kita ganti dgn '' 
 
 
+*/
 
 
+/*
+Pembuatan enum utk masing2 judul function kita bias gunakan enum 
+pemberian digit number coutner secara tidak langsung pada string variable 
+enum Operators {
+  summ,subtract,divided,multiplier
+}
+nnti function changePrevNumber selalau dimasukan utk memasuka
+current number(sbgi prevNumber) 
+stlahnya baru calc tombol dipencel utk masukan 
+
+nah kita masukan nnti useRef ,kita pakai userRef.cuurent diisi masug2
+enum diatas dan nnti nilai digitnya masuk ke bagian switch pilihan 
+yg mana nnti mengoperasikan logika masing2 butoon operator!
 
 */
